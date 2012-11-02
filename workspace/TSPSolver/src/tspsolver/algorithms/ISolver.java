@@ -1,5 +1,7 @@
 package tspsolver.algorithms;
 
+import java.util.Properties;
+
 public interface ISolver {
 	
 	/**
@@ -9,6 +11,6 @@ public interface ISolver {
 	 * 
 	 * take distances between points return the array of point indexes in optimized order
 	 */
-	public int[] solve(double[][] distances);
+	public int[] solve(double[][] distances, Properties properties);
 
 }
