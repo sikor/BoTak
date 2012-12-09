@@ -4,10 +4,18 @@ public interface ISolver {
 	
 	/**
 	 * 
-	 * Returns instance of class Return.
+	 * Each call returns result of next Iteration of the algorithm.
 	 * 
 	 */
 	
-	public Return solve();
+	public IterationResult nextIteration();
+	
+	
+	/**
+	 * used to set algorithm properties, should be called before calling nextIteration()
+	 * @param properties
+	 */
+
+	
 
 }

@@ -6,9 +6,14 @@ import java.util.Properties;
 import java.util.Random;
 
 import tspsolver.algorithms.ISolver;
-import tspsolver.algorithms.Return;
+import tspsolver.algorithms.IterationResult;
 
 public class GeneticSolver implements ISolver{
+	
+	
+	int maxIterationCount = 100;
+	int iterationNumber = 0;
+	
 	double odleglosci[][] = {{0, 4, 2, 4, 4},
 			{4, 0, 4, 6, 2},
 			{2, 4, 0, 2, 2},
@@ -151,17 +156,19 @@ public class GeneticSolver implements ISolver{
 		}
 	}
 	
-	public Return solve() {
+	public IterationResult nextIteration() {
+		if(iterationNumber == maxIterationCount){
+			return null;
+		}
 		if(obecni == null) {
 			pierwszaPopulacja();
 		} else {
 			krzyzowanie();
 			mutacja();
 		}
-		Return r = new Return();
+		
 		Osobnik naj = najlepszy();
-		r.length = naj.odleglosc;
-		r.path = naj.dna.doTablicyIntow();
+		IterationResult r = new IterationResult(naj.dna.doTablicyIntow(),naj.odleglosc, iterationNumber++);
 		return r;
 	}
 	
@@ -189,4 +196,6 @@ public class GeneticSolver implements ISolver{
 		c.dna.wypelnij();
 		c.odleglosc = c.dna.odleglosc();
 	}
+
+
 }
