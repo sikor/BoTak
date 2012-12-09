@@ -1,8 +1,6 @@
 package tspsolver.model;
 
 import java.util.Properties;
-import java.util.concurrent.FutureTask;
-
 import tspsolver.algorithms.Algorithm;
 import tspsolver.model.interfaces.IModelChangeListener;
 
@@ -26,13 +24,6 @@ public class ProgramState {
 	public ProblemSolution addNewSolution(Problem problem, Algorithm algorithm, Properties properties) {
 		final ProblemSolution problemSolution = new ProblemSolution(changeListener, problem, algorithm, properties);
 		solvedProblems.addSolution(problemSolution);
-		new FutureTask<Object>(new Runnable(){
-			@Override
-			public void run() {
-				changeListener.newSolutionAdded(problemSolution);
-			}
-		}, null);
-		
 		return problemSolution;
 	}
 

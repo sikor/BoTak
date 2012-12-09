@@ -52,6 +52,10 @@ public class ProblemSolution implements IProblemSolution {
 			}
 		}, null);
 	}
+	
+	public synchronized boolean isFinished(){
+		return isFinished;
+	}
 
 	public Problem getProblem() {
 		return problem;

@@ -1,6 +1,8 @@
 package tspsolver.model;
 
 import java.util.ArrayList;
+import java.util.concurrent.FutureTask;
+
 import tspsolver.model.interfaces.IModelChangeListener;
 
 public class SolvedProblems {
@@ -14,9 +16,14 @@ public class SolvedProblems {
 		problemsSolutions = new ArrayList<ProblemSolution>();
 	}
 
-	synchronized void addSolution(ProblemSolution problemSolution) {
+	synchronized void addSolution(final ProblemSolution problemSolution) {
 		problemsSolutions.add(problemSolution);
-		programStateChangeListener.newSolutionAdded(problemSolution);
+		new FutureTask<Object>(new Runnable(){
+			@Override
+			public void run() {
+				programStateChangeListener.newSolutionAdded(problemSolution);
+			}
+		}, null);
 	}
 
 	public synchronized int getSolutionsCount(){

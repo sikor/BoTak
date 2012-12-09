@@ -3,6 +3,7 @@ package tspsolver;
 import tspsolver.algorithms.Algorithm;
 import tspsolver.algorithms.ISolver;
 import tspsolver.algorithms.genetic.GeneticSolver;
+import tspsolver.model.CockroachParameters;
 import tspsolver.model.GeneticParameters;
 import tspsolver.model.Problem;
 import tspsolver.model.ProblemSolution;
@@ -25,6 +26,11 @@ public class GuiActionsListener {
 		solveProblem(geneticSolver, problemSolution);
 	}
 	
+	public void solveCurrentProblemWithCockRoach(CockroachParameters cockroachParameters, Problem currentProblem){
+		GeneticSolver geneticSolver = new GeneticSolver(currentProblem.getDistances(), cockroachParameters.getAsProperties());
+		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Genetic, cockroachParameters.getAsProperties());
+		solveProblem(geneticSolver, problemSolution);
+	}
 	
 	private void solveProblem(ISolver solver, ProblemSolution problemSolution){
 		SolutionRunnerThread srt = new SolutionRunnerThread(solver, problemSolution);
