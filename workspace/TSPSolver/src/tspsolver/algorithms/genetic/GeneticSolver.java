@@ -18,6 +18,7 @@ public class GeneticSolver implements ISolver{
 
 	public GeneticSolver(double[][] distances, Properties properties) {
 		//Hardcoded for now and... in polish, booya!
+		//...
 	}
 
 	Random r = new Random();
