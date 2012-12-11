@@ -1,4 +1,4 @@
-package tspsolver.gui;
+package tspsolver.guiexample;
 
 import tspsolver.algorithms.IterationResult;
 import tspsolver.model.interfaces.IModelChangeListener;

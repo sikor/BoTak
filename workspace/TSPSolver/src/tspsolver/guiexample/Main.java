@@ -1,4 +1,4 @@
-package tspsolver.gui;
+package tspsolver.guiexample;
 
 
 import java.util.Arrays;
