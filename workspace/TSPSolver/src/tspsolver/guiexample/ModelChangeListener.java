@@ -19,7 +19,7 @@ public class ModelChangeListener implements IModelChangeListener {
 
 	@Override
 	public synchronized void newSolutionAdded(IProblemSolution problemSolution) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

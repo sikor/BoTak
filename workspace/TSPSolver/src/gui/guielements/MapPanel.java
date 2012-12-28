@@ -1,4 +1,4 @@
-package tspsolver.guiexample;
+package gui.guielements;
 
 import java.awt.Color;
 import java.awt.Dimension;

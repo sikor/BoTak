@@ -16,8 +16,7 @@ public class GeneticParameters {
 		prop.put("iterationCount", iterationCount);
 		return prop;
 	}
-
-
+	
 	public int getIterationCount() {
 		return iterationCount;
 	}

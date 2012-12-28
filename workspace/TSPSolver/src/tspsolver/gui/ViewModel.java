@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import org.jfree.chart.JFreeChart;
+
 /*
 Szymku:
 Do napisania
@@ -57,11 +59,6 @@ public class ViewModel {
 	private JTabbedPane tab;
 	/* End of Right Menu */
 	
-	/* Bottom Panel */
-	private JPanel panelBottom;
-	private JButton end;
-	/* End of Bottom Panel */
-	
 /* Constructors */
 	
 	public ViewModel ( ) {
@@ -70,10 +67,10 @@ public class ViewModel {
 		frameMain.setLayout(new BorderLayout(2,2));
 		frameMain.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameMain.setVisible(true);
-		frameMain.setMinimumSize(new Dimension(1000,700));
+		frameMain.setMinimumSize(new Dimension(800,600));
 		
 	/* Top Menu */
-
+		
 		this.panelTop = new JPanel();
 		panelTop.setLayout(new FlowLayout(FlowLayout.LEFT));
 		frameMain.add(panelTop,BorderLayout.NORTH);
@@ -146,16 +143,6 @@ public class ViewModel {
 	/* End of Right Menu */
 
 
-	/* Bottom Panel */
-		
-		this.panelBottom = new JPanel();
-		panelBottom.setLayout(new FlowLayout());
-		frameMain.add(panelBottom,BorderLayout.SOUTH);
-		
-		this.end = new JButton("END");
-		panelBottom.add(end);
-		
-	/* End of Bottom Panel */
 	}
 	
 /* Methods */
