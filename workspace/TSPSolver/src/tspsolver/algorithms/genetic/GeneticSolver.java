@@ -120,23 +120,26 @@ public class GeneticSolver implements ISolver{
 		lubTen.dna.krzyzujZ(obecni[ten].dna);
 		lubTen.odleglosc = lubTen.dna.odleglosc();
 		Osobnik wybrani[] = {obecni[ten], obecni[zTym], wTen, lubTen};
-		double suma = 0;
+		double suma = 0, sumaOdwrocona = 0;
 		for(Osobnik o : wybrani) {
 			suma += o.odleglosc;
 		}
-		int pierwszy = wybierzSkrzyzowanego(wybrani, suma), drugi;
+		for(Osobnik o : wybrani) {
+			sumaOdwrocona += suma - o.odleglosc;
+		}
+		int pierwszy = wybierzSkrzyzowanego(wybrani, suma, sumaOdwrocona), drugi;
 		do {
-			drugi = wybierzSkrzyzowanego(wybrani, suma);
+			drugi = wybierzSkrzyzowanego(wybrani, suma, sumaOdwrocona);
 		} while(drugi == pierwszy);
 		obecni[ten] = wybrani[pierwszy];
 		obecni[zTym] = wybrani[drugi];
 	}
-	
-	int wybierzSkrzyzowanego(Osobnik wybrani[], double suma) {
+
+	int wybierzSkrzyzowanego(Osobnik wybrani[], double suma, double sumaOdwrocona) {
 		int w = 0;
-		double los = losuj((int)suma - 1);
-		while(los > wybrani[w].odleglosc) {
-			los -= wybrani[w].odleglosc;
+		double los = losuj((int)sumaOdwrocona - 1);
+		while(los > suma - wybrani[w].odleglosc) {
+			los -= suma - wybrani[w].odleglosc;
 			++w;
 		}
 		return w;
