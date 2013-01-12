@@ -2,17 +2,16 @@ package tspsolver;
 
 import tspsolver.algorithms.Algorithm;
 import tspsolver.algorithms.ISolver;
+import tspsolver.algorithms.cockroach.CockroachSolver;
 import tspsolver.algorithms.genetic.GeneticSolver;
 import tspsolver.model.CockroachParameters;
 import tspsolver.model.GeneticParameters;
 import tspsolver.model.Problem;
-import tspsolver.model.ProblemSolution;
-import tspsolver.model.ProgramState;
 
 public class GuiActionsListener {
 
 	
-	ProgramState programState;
+	private final ProgramState programState;
 	
 	public GuiActionsListener(ProgramState programState){
 		this.programState = programState;
@@ -20,17 +19,23 @@ public class GuiActionsListener {
 	}
 	
 	
-	
 	public void solveCurrentProblemWithGenetic(GeneticParameters geneticParameters, Problem currentProblem){
-		GeneticSolver geneticSolver = new GeneticSolver(currentProblem.getDistances(), geneticParameters.getAsProperties());
-		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Genetic, geneticParameters.getAsProperties());
+		GeneticSolver geneticSolver = new GeneticSolver(
+				currentProblem.getDistances(),
+				geneticParameters.getIterationCount(),
+				geneticParameters.getLiczbaOsobnikow(), 
+				geneticParameters.getLiczbaKrzyzowan(), 
+				geneticParameters.getLiczbaMutacji(), 
+				geneticParameters.getLiczbaPodmianWObrebieMutacji()
+			);
+		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Genetic, geneticParameters);
 		solveProblem(geneticSolver, problemSolution);
 	}
 	
 	public void solveCurrentProblemWithCockRoach(CockroachParameters cockroachParameters, Problem currentProblem){
-		GeneticSolver geneticSolver = new GeneticSolver(currentProblem.getDistances(), cockroachParameters.getAsProperties());
-		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Genetic, cockroachParameters.getAsProperties());
-		solveProblem(geneticSolver, problemSolution);
+		CockroachSolver cockroachSolver = new CockroachSolver(currentProblem.getDistances(), cockroachParameters);
+		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Cockroach, cockroachParameters);
+		solveProblem(cockroachSolver, problemSolution);
 	}
 	
 	private void solveProblem(ISolver solver, ProblemSolution problemSolution){

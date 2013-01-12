@@ -2,7 +2,6 @@ package tspsolver.algorithms.genetic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 
 import tspsolver.algorithms.ISolver;
@@ -11,20 +10,23 @@ import tspsolver.algorithms.IterationResult;
 public class GeneticSolver implements ISolver{
 	
 	
-	int maxIterationCount = 100;
+	final int maxIterationCount;
 	int iterationNumber = 0;
 	
-	double odleglosci[][] = {{0, 4, 2, 4, 4},
-			{4, 0, 4, 6, 2},
-			{2, 4, 0, 2, 2},
-			{4, 6, 2, 0, 4},
-			{4, 2, 2, 4, 0}};
-	int N = 5, K = 2, M = 1, m = 1;
+	final double odleglosci[][];
+	final int N, K, M, m, n;
 
-	public GeneticSolver(double[][] distances, Properties properties) {
-		//Hardcoded for now and... in polish, booya!
-		//...
+	public GeneticSolver(double[][] distances, int maxIterationCount, int liczbaOsobnikow, int liczbaKrzyzowan, int liczbaMutacji,
+			int liczbaPodmianWObrebieMutacji) {
+		this.odleglosci = distances;
+		this.maxIterationCount = maxIterationCount;
+		this.N = liczbaOsobnikow;
+		this.K = liczbaKrzyzowan;
+		this.M = liczbaMutacji;
+		this.m = liczbaPodmianWObrebieMutacji;
+		this.n = odleglosci.length;
 	}
+	
 
 	Random r = new Random();
 	
@@ -51,17 +53,17 @@ public class GeneticSolver implements ISolver{
 		void wypelnij() {
 			int los;
 			t.add(new Integer(0));
-			for(int i = 1; i < N; ++i) {
+			for(int i = 1; i < n; ++i) {
 				do {
-					los = losuj(N - 1) + 1;
+					los = losuj(n - 1) + 1;
 				} while(t.contains(new Integer(los)));
 				t.add(new Integer(los));
 			}
 		}
 		
 		void krzyzujZ(Chromosomy and) {
-			int odKtorego = losuj(N - 2) + 1;
-			int ile = losuj(N - odKtorego);
+			int odKtorego = losuj(n - 2) + 1;
+			int ile = losuj(n - odKtorego);
 			
 			List<Integer> pod = and.t.subList(odKtorego, odKtorego + ile);
 			t.removeAll(pod);
@@ -75,7 +77,7 @@ public class GeneticSolver implements ISolver{
 		}
 		
 		void zamienLosowe() {
-			int ten = losuj(N - 1) + 1, zTym = losuj(N - 1) + 1;
+			int ten = losuj(n - 1) + 1, zTym = losuj(n - 1) + 1;
 			Integer i = t.get(ten);
 			t.set(ten, t.get(zTym));
 			t.set(zTym, i);
@@ -83,14 +85,14 @@ public class GeneticSolver implements ISolver{
 		
 		double odleglosc() {
 			double r = 0;
-			for(int i = 0; i < N -1; ++i) {
+			for(int i = 0; i < n -1; ++i) {
 				r += odleglosci[t.get(i)][t.get(i + 1)];
 			}
 			return r;
 		}
 
 		int [] doTablicyIntow() {
-			int r[] = new int[N], i = 0;
+			int r[] = new int[n], i = 0;
 			for(Integer m : t) {
 				r[i] = m;
 				++i;
@@ -120,23 +122,28 @@ public class GeneticSolver implements ISolver{
 		lubTen.dna.krzyzujZ(obecni[ten].dna);
 		lubTen.odleglosc = lubTen.dna.odleglosc();
 		Osobnik wybrani[] = {obecni[ten], obecni[zTym], wTen, lubTen};
-		double suma = 0;
+		double suma = 0, sumaOdwrocona = 0;
 		for(Osobnik o : wybrani) {
 			suma += o.odleglosc;
 		}
-		int pierwszy = wybierzSkrzyzowanego(wybrani, suma), drugi;
+		for(Osobnik o : wybrani) {
+			sumaOdwrocona += suma - o.odleglosc;
+		}
+		int pierwszy = wybierzSkrzyzowanego(wybrani, suma, sumaOdwrocona),
+				drugi;
 		do {
-			drugi = wybierzSkrzyzowanego(wybrani, suma);
+			drugi = wybierzSkrzyzowanego(wybrani, suma, sumaOdwrocona);
 		} while(drugi == pierwszy);
 		obecni[ten] = wybrani[pierwszy];
 		obecni[zTym] = wybrani[drugi];
 	}
-	
-	int wybierzSkrzyzowanego(Osobnik wybrani[], double suma) {
+
+	int wybierzSkrzyzowanego(Osobnik wybrani[], double suma,
+			double sumaOdwrocona) {
 		int w = 0;
-		double los = losuj((int)suma - 1);
-		while(los > wybrani[w].odleglosc) {
-			los -= wybrani[w].odleglosc;
+		double los = losuj((int)sumaOdwrocona - 1);
+		while(los > suma - wybrani[w].odleglosc) {
+			los -= suma - wybrani[w].odleglosc;
 			++w;
 		}
 		return w;
@@ -168,7 +175,8 @@ public class GeneticSolver implements ISolver{
 		}
 		
 		Osobnik naj = najlepszy();
-		IterationResult r = new IterationResult(naj.dna.doTablicyIntow(),naj.odleglosc, iterationNumber++);
+		IterationResult r = new IterationResult(
+				naj.dna.doTablicyIntow(),naj.odleglosc, iterationNumber++);
 		return r;
 	}
 	
