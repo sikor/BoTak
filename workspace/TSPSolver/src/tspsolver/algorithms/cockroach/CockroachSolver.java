@@ -18,7 +18,7 @@ public class CockroachSolver implements ISolver{
     						{2, 4, 0, 2, 2},
     						{4, 6, 2, 0, 4},
     						{4, 2, 2, 4, 0}};
-    int citiesNumber = distances[0].length;
+    private final int citiesNumber;
 
     private List<Cockroach> cockroaches = new ArrayList<Cockroach>();      // cockroach is a path
     Cockroach bestCockroach;
@@ -35,6 +35,7 @@ public class CockroachSolver implements ISolver{
     	this.iterations = parameters.getIterationCount();
     	this.steps = parameters.getSteps();
     	this.population = parameters.getPopulation();
+    	this.citiesNumber = distances.length;
     }
 
 

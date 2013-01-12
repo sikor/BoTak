@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 
 import tspsolver.algorithms.Algorithm;
@@ -22,8 +24,9 @@ public class ProblemSolution implements IProblemSolution {
 	private final Algorithm algorithm;
 	private final IModelChangeListener programStateChangeListener;
 	private final AlgorithmParameters algorithmProperties;
+	private final ExecutorService guiNotifier;
 	
-	public ProblemSolution(IModelChangeListener programStateChangeListener, Problem problem, Algorithm algorithm, AlgorithmParameters algorithmProperties) {
+	public ProblemSolution(ExecutorService guiNotifier, IModelChangeListener programStateChangeListener, Problem problem, Algorithm algorithm, AlgorithmParameters algorithmProperties) {
 		super();
 		this.problem = problem;
 		this.isFinished = false;
@@ -32,7 +35,7 @@ public class ProblemSolution implements IProblemSolution {
 		int iterationCount =algorithmProperties.getIterationCount();
 		this.iterationResults = Collections.synchronizedList(new ArrayList<IterationResult>(iterationCount));
 		this.programStateChangeListener  = programStateChangeListener;
-		
+		this.guiNotifier = guiNotifier;
 	}
 	
 	synchronized void addIterationResult(final IterationResult ir){
@@ -41,24 +44,26 @@ public class ProblemSolution implements IProblemSolution {
 		}
 		iterationResults.add(ir);
 		final ProblemSolution problemSolution = this;
-		new FutureTask<Object>(new Runnable() {
+		guiNotifier.submit(new Runnable() {
 			@Override
 			public void run() {
 				programStateChangeListener.newIterationResultAdded(problemSolution, ir);
 			}
-		}, null);
+		});
+		
 	}
 
 	public synchronized void setFinished(){
 		this.isFinished = true;
 		
 		final ProblemSolution problemSolution = this;
-		new FutureTask<Object>(new Runnable() {
+		
+		guiNotifier.submit(new Runnable() {
 			@Override
 			public void run() {
 				programStateChangeListener.solutionFinished(problemSolution);
 			}
-		}, null);
+		});
 	}
 	
 	public synchronized boolean isFinished(){
@@ -78,11 +83,11 @@ public class ProblemSolution implements IProblemSolution {
 		return algorithmProperties.getAsProperties();
 	}
 	
-	public synchronized int getIterationsCount(){
+	public  int getIterationsCount(){
 		return iterationResults.size();
 	}
 	
-	public synchronized IterationResult getIterationResult(int i){
+	public  IterationResult getIterationResult(int i){
 		return iterationResults.get(i);
 	}
 
