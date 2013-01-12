@@ -14,7 +14,7 @@ public class GeneticSolver implements ISolver{
 	int iterationNumber = 0;
 	
 	final double odleglosci[][];
-	final int N, K, M, m;
+	final int N, K, M, m, n;
 
 	public GeneticSolver(double[][] distances, int maxIterationCount, int liczbaOsobnikow, int liczbaKrzyzowan, int liczbaMutacji,
 			int liczbaPodmianWObrebieMutacji) {
@@ -24,6 +24,7 @@ public class GeneticSolver implements ISolver{
 		this.K = liczbaKrzyzowan;
 		this.M = liczbaMutacji;
 		this.m = liczbaPodmianWObrebieMutacji;
+		this.n = odleglosci.length;
 	}
 	
 
@@ -52,17 +53,17 @@ public class GeneticSolver implements ISolver{
 		void wypelnij() {
 			int los;
 			t.add(new Integer(0));
-			for(int i = 1; i < N; ++i) {
+			for(int i = 1; i < n; ++i) {
 				do {
-					los = losuj(N - 1) + 1;
+					los = losuj(n - 1) + 1;
 				} while(t.contains(new Integer(los)));
 				t.add(new Integer(los));
 			}
 		}
 		
 		void krzyzujZ(Chromosomy and) {
-			int odKtorego = losuj(N - 2) + 1;
-			int ile = losuj(N - odKtorego);
+			int odKtorego = losuj(n - 2) + 1;
+			int ile = losuj(n - odKtorego);
 			
 			List<Integer> pod = and.t.subList(odKtorego, odKtorego + ile);
 			t.removeAll(pod);
@@ -76,7 +77,7 @@ public class GeneticSolver implements ISolver{
 		}
 		
 		void zamienLosowe() {
-			int ten = losuj(N - 1) + 1, zTym = losuj(N - 1) + 1;
+			int ten = losuj(n - 1) + 1, zTym = losuj(n - 1) + 1;
 			Integer i = t.get(ten);
 			t.set(ten, t.get(zTym));
 			t.set(zTym, i);
@@ -84,14 +85,14 @@ public class GeneticSolver implements ISolver{
 		
 		double odleglosc() {
 			double r = 0;
-			for(int i = 0; i < N -1; ++i) {
+			for(int i = 0; i < n -1; ++i) {
 				r += odleglosci[t.get(i)][t.get(i + 1)];
 			}
 			return r;
 		}
 
 		int [] doTablicyIntow() {
-			int r[] = new int[N], i = 0;
+			int r[] = new int[n], i = 0;
 			for(Integer m : t) {
 				r[i] = m;
 				++i;
