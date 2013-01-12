@@ -7,6 +7,7 @@ import java.util.List;
 import tspsolver.GuiActionsListener;
 import tspsolver.Initializator;
 import tspsolver.SolvedProblems;
+import tspsolver.model.CockroachParameters;
 import tspsolver.model.GeneticParameters;
 import tspsolver.model.Point;
 import tspsolver.model.Problem;
@@ -34,8 +35,10 @@ public class Main {
 		
 		Problem currentProblem = new Problem(pointList); //create problem
 		
-		GeneticParameters geneticParameters = new GeneticParameters(iterationCount, 4, 4, 2, 2); //create parameters Class
+		GeneticParameters geneticParameters = new GeneticParameters(iterationCount, 6, 4, 2, 2); //create parameters Class
+		CockroachParameters cockroachParameters = new CockroachParameters(iterationCount, 10, 5);
 		actionsListener.solveCurrentProblemWithGenetic(geneticParameters, currentProblem);   //run action
+		actionsListener.solveCurrentProblemWithCockRoach(cockroachParameters, currentProblem);
 	}
 
 }

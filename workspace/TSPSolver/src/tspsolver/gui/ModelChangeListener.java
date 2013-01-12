@@ -19,20 +19,21 @@ public class ModelChangeListener implements IModelChangeListener {
 
 	@Override
 	public synchronized void newSolutionAdded(IProblemSolution problemSolution) {
-		// TODO Auto-generated method stub
+		System.out.println("new solution added");
 
 	}
 
 	@Override
 	public synchronized void newIterationResultAdded(IProblemSolution problemSolution,
 			IterationResult ir) {
-		// TODO Auto-generated method stub
+		System.out.println("new iteratoin result added " + ir.getIterationNumber()+ " "+problemSolution.getAlgorithm());
 
 	}
 
 	@Override
 	public synchronized void solutionFinished(IProblemSolution problemSolution) {
-		// TODO Auto-generated method stub
+		System.out.println("solution finished");
+		
 
 	}
 
