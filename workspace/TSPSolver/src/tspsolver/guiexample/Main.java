@@ -1,6 +1,8 @@
 package tspsolver.guiexample;
 
 
+import gui.guielements.MainWindow;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,13 +12,14 @@ import tspsolver.model.GeneticParameters;
 import tspsolver.model.Point;
 import tspsolver.model.Problem;
 import tspsolver.model.SolvedProblems;
+import tspsolver.model.interfaces.IModelChangeListener;
 
 public class Main {
 	
 	
 	
 	public static void main(String[] args) {
-		ModelChangeListener modelChangeListener = new ModelChangeListener(); //Gui implements change listener class
+		IModelChangeListener modelChangeListener = new MainWindow(); //Gui implements change listener class
 		Initializator initializator = new Initializator(modelChangeListener); // Gui initialize model and controller
 		GuiActionsListener actionsListener = initializator.getActionsListener(); //Gui get api interface for calling actions
 		SolvedProblems solvedProblems = initializator.getSolvedProblems(); //GUI takes lists of solvedProblems if want
