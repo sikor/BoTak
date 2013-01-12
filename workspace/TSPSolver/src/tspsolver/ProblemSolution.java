@@ -32,6 +32,7 @@ public class ProblemSolution implements IProblemSolution {
 		int iterationCount =algorithmProperties.getIterationCount();
 		this.iterationResults = Collections.synchronizedList(new ArrayList<IterationResult>(iterationCount));
 		this.programStateChangeListener  = programStateChangeListener;
+		
 	}
 	
 	synchronized void addIterationResult(final IterationResult ir){
