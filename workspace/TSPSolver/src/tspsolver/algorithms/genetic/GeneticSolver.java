@@ -14,16 +14,19 @@ public class GeneticSolver implements ISolver{
 	int maxIterationCount = 100;
 	int iterationNumber = 0;
 	
-	double odleglosci[][] = {{0, 4, 2, 4, 4},
-			{4, 0, 4, 6, 2},
-			{2, 4, 0, 2, 2},
-			{4, 6, 2, 0, 4},
-			{4, 2, 2, 4, 0}};
-	int N = 5, K = 2, M = 1, m = 1;
+	double odleglosci[][];
+	int N, K, M, m;
 
 	public GeneticSolver(double[][] distances, Properties properties) {
-		//Hardcoded for now and... in polish, booya!
-		//...
+		this.odleglosci = distances;
+	}
+	
+	void setUp(int liczbaOsobnikow, int liczbaKrzyzowan, int liczbaMutacji,
+			int liczbaPodmianWObrebieMutacji) {
+		this.N = liczbaOsobnikow;
+		this.K = liczbaKrzyzowan;
+		this.M = liczbaMutacji;
+		this.m = liczbaPodmianWObrebieMutacji;
 	}
 
 	Random r = new Random();
@@ -127,7 +130,8 @@ public class GeneticSolver implements ISolver{
 		for(Osobnik o : wybrani) {
 			sumaOdwrocona += suma - o.odleglosc;
 		}
-		int pierwszy = wybierzSkrzyzowanego(wybrani, suma, sumaOdwrocona), drugi;
+		int pierwszy = wybierzSkrzyzowanego(wybrani, suma, sumaOdwrocona),
+				drugi;
 		do {
 			drugi = wybierzSkrzyzowanego(wybrani, suma, sumaOdwrocona);
 		} while(drugi == pierwszy);
@@ -135,7 +139,8 @@ public class GeneticSolver implements ISolver{
 		obecni[zTym] = wybrani[drugi];
 	}
 
-	int wybierzSkrzyzowanego(Osobnik wybrani[], double suma, double sumaOdwrocona) {
+	int wybierzSkrzyzowanego(Osobnik wybrani[], double suma,
+			double sumaOdwrocona) {
 		int w = 0;
 		double los = losuj((int)sumaOdwrocona - 1);
 		while(los > suma - wybrani[w].odleglosc) {
@@ -171,7 +176,8 @@ public class GeneticSolver implements ISolver{
 		}
 		
 		Osobnik naj = najlepszy();
-		IterationResult r = new IterationResult(naj.dna.doTablicyIntow(),naj.odleglosc, iterationNumber++);
+		IterationResult r = new IterationResult(
+				naj.dna.doTablicyIntow(),naj.odleglosc, iterationNumber++);
 		return r;
 	}
 	
