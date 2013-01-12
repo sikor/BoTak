@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import tspsolver.algorithms.ISolver;
 import tspsolver.algorithms.IterationResult;
+import tspsolver.model.CockroachParameters;
 
 public class CockroachSolver implements ISolver{
 	
@@ -25,24 +26,19 @@ public class CockroachSolver implements ISolver{
     int bestIndex;
     
     private int iterationNumber = 0;
-    private int population = 5;
-    private int iterations = 3;
-    private int steps = 1;
+    private final int population;
+    private final int iterations;
+    private final int steps;
 
-//    public CockroachSolver(double [][]distances){
-//    }
-
-    public void setIterations(int it){
-        iterations = it;
+    public CockroachSolver(double [][]distances, CockroachParameters parameters){
+    	this.distances = distances;
+    	this.iterations = parameters.getIterationCount();
+    	this.steps = parameters.getSteps();
+    	this.population = parameters.getPopulation();
     }
 
-    public void setPopulation(int pop){
-        population = pop;
-    }
 
-    public void setStep(int st){
-        steps = st;
-    }
+
 
     public class Cockroach{
     	List<Integer> cities = new ArrayList<Integer>();

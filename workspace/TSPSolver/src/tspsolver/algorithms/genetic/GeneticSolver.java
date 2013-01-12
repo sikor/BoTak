@@ -2,7 +2,6 @@ package tspsolver.algorithms.genetic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 
 import tspsolver.algorithms.ISolver;
@@ -11,23 +10,22 @@ import tspsolver.algorithms.IterationResult;
 public class GeneticSolver implements ISolver{
 	
 	
-	int maxIterationCount = 100;
+	final int maxIterationCount;
 	int iterationNumber = 0;
 	
-	double odleglosci[][];
-	int N, K, M, m;
+	final double odleglosci[][];
+	final int N, K, M, m;
 
-	public GeneticSolver(double[][] distances, Properties properties) {
-		this.odleglosci = distances;
-	}
-	
-	void setUp(int liczbaOsobnikow, int liczbaKrzyzowan, int liczbaMutacji,
+	public GeneticSolver(double[][] distances, int maxIterationCount, int liczbaOsobnikow, int liczbaKrzyzowan, int liczbaMutacji,
 			int liczbaPodmianWObrebieMutacji) {
+		this.odleglosci = distances;
+		this.maxIterationCount = maxIterationCount;
 		this.N = liczbaOsobnikow;
 		this.K = liczbaKrzyzowan;
 		this.M = liczbaMutacji;
 		this.m = liczbaPodmianWObrebieMutacji;
 	}
+	
 
 	Random r = new Random();
 	

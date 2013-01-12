@@ -20,7 +20,7 @@ public class Problem {
 		this.pointList = pointList;
 		distances = new double[pointList.size()][pointList.size()];
 		for(int i=0; i<pointList.size(); ++i){
-			for(int j=i; j<pointList.size(); ++i){
+			for(int j=i; j<pointList.size(); ++j){
 				distances[i][j] = distances[j][i] = pointList.get(i).getDistance(pointList.get(j));
 			}
 		}
