@@ -1,25 +1,17 @@
 package tspsolver.model;
 
-import java.util.Properties;
+import tspsolver.annotations.Immutable;
 
-public class GeneticParameters {
+
+@Immutable
+public class GeneticParameters extends AlgorithmParameters{
 
 	
-	private int iterationCount;
 	
 	public GeneticParameters(int iterationCount){
-		this.iterationCount = iterationCount;
-	}
-	
-	public Properties getAsProperties() {
-		Properties prop = new Properties();
-		prop.put("iterationCount", iterationCount);
-		return prop;
+		super(iterationCount);
+
 	}
 
-
-	public int getIterationCount() {
-		return iterationCount;
-	}
 
 }

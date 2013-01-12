@@ -1,4 +1,4 @@
-package tspsolver.model;
+package tspsolver;
 
 import java.util.ArrayList;
 import java.util.concurrent.FutureTask;
@@ -11,7 +11,7 @@ public class SolvedProblems {
 	private ArrayList<ProblemSolution> problemsSolutions;
 	private IModelChangeListener programStateChangeListener;
 	
-	SolvedProblems(IModelChangeListener programStateChangeListener){
+	public SolvedProblems(IModelChangeListener programStateChangeListener){
 		this.programStateChangeListener = programStateChangeListener;
 		problemsSolutions = new ArrayList<ProblemSolution>();
 	}

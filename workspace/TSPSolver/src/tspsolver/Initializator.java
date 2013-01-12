@@ -1,7 +1,5 @@
 package tspsolver;
 
-import tspsolver.model.ProgramState;
-import tspsolver.model.SolvedProblems;
 import tspsolver.model.interfaces.IModelChangeListener;
 
 public class Initializator {

@@ -2,12 +2,11 @@ package tspsolver;
 
 import tspsolver.algorithms.ISolver;
 import tspsolver.algorithms.IterationResult;
-import tspsolver.model.ProblemSolution;
 
 public class SolutionRunnerThread extends Thread{
 
-	private ISolver solver;
-	private ProblemSolution problemSolution;
+	private final ISolver solver;
+	private final ProblemSolution problemSolution;
 	
 	public SolutionRunnerThread(ISolver solver, ProblemSolution problemSolution) {
 		this.solver = solver;

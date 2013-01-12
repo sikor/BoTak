@@ -1,7 +1,8 @@
-package tspsolver.model;
+package tspsolver;
 
-import java.util.Properties;
 import tspsolver.algorithms.Algorithm;
+import tspsolver.model.AlgorithmParameters;
+import tspsolver.model.Problem;
 import tspsolver.model.interfaces.IModelChangeListener;
 
 public class ProgramState {
@@ -21,8 +22,8 @@ public class ProgramState {
 		return solvedProblems;
 	}
 
-	public ProblemSolution addNewSolution(Problem problem, Algorithm algorithm, Properties properties) {
-		final ProblemSolution problemSolution = new ProblemSolution(changeListener, problem, algorithm, properties);
+	public ProblemSolution addNewSolution(Problem problem, Algorithm algorithm, AlgorithmParameters properties) {
+		ProblemSolution problemSolution = new ProblemSolution(changeListener, problem, algorithm, properties);
 		solvedProblems.addSolution(problemSolution);
 		return problemSolution;
 	}

@@ -6,13 +6,11 @@ import tspsolver.algorithms.genetic.GeneticSolver;
 import tspsolver.model.CockroachParameters;
 import tspsolver.model.GeneticParameters;
 import tspsolver.model.Problem;
-import tspsolver.model.ProblemSolution;
-import tspsolver.model.ProgramState;
 
 public class GuiActionsListener {
 
 	
-	ProgramState programState;
+	private final ProgramState programState;
 	
 	public GuiActionsListener(ProgramState programState){
 		this.programState = programState;
@@ -20,16 +18,15 @@ public class GuiActionsListener {
 	}
 	
 	
-	
 	public void solveCurrentProblemWithGenetic(GeneticParameters geneticParameters, Problem currentProblem){
-		GeneticSolver geneticSolver = new GeneticSolver(currentProblem.getDistances(), geneticParameters.getAsProperties());
-		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Genetic, geneticParameters.getAsProperties());
+		GeneticSolver geneticSolver = new GeneticSolver(currentProblem.getDistances(), new java.util.Properties());
+		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Genetic, geneticParameters);
 		solveProblem(geneticSolver, problemSolution);
 	}
 	
 	public void solveCurrentProblemWithCockRoach(CockroachParameters cockroachParameters, Problem currentProblem){
 		GeneticSolver geneticSolver = new GeneticSolver(currentProblem.getDistances(), cockroachParameters.getAsProperties());
-		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Genetic, cockroachParameters.getAsProperties());
+		ProblemSolution problemSolution = programState.addNewSolution(currentProblem, Algorithm.Cockroach, cockroachParameters);
 		solveProblem(geneticSolver, problemSolution);
 	}
 	

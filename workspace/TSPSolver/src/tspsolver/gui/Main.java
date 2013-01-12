@@ -6,10 +6,10 @@ import java.util.List;
 
 import tspsolver.GuiActionsListener;
 import tspsolver.Initializator;
+import tspsolver.SolvedProblems;
 import tspsolver.model.GeneticParameters;
 import tspsolver.model.Point;
 import tspsolver.model.Problem;
-import tspsolver.model.SolvedProblems;
 
 public class Main {
 	
