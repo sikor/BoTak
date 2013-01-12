@@ -1,12 +1,16 @@
 package tspsolver.algorithms;
 
+import java.util.Arrays;
+
+import tspsolver.annotations.Immutable;
 
 
 
+@Immutable
 public class IterationResult {
-	private int [] path;
-	private double length;
-	private int iterationNumber;
+	private final int [] path;
+	private final double length;
+	private final int iterationNumber;
 	
 	
 	public IterationResult(int [] path, double length, int iterationNumber){
@@ -17,7 +21,7 @@ public class IterationResult {
 	
 	
 	public int[] getPath() {
-		return path;
+		return Arrays.copyOf(path, path.length);
 	}
 
 	public double getLength() {

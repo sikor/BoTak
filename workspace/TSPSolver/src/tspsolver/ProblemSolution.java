@@ -1,33 +1,41 @@
-package tspsolver.model;
+package tspsolver;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.FutureTask;
 
 import tspsolver.algorithms.Algorithm;
 import tspsolver.algorithms.IterationResult;
+import tspsolver.model.AlgorithmParameters;
+import tspsolver.model.Problem;
 import tspsolver.model.interfaces.IModelChangeListener;
 import tspsolver.model.interfaces.IProblemSolution;
 
 public class ProblemSolution implements IProblemSolution {
 	
 	
-	private Problem problem;
-	private ArrayList<IterationResult> iterationResults;
-	private boolean isFinished;
-	private Algorithm algorithm;
-	private IModelChangeListener programStateChangeListener;
-	private Properties algorithmProperties;
+	private final Problem problem;
+	private final List<IterationResult> iterationResults;
+	private volatile boolean isFinished;
+	private final Algorithm algorithm;
+	private final IModelChangeListener programStateChangeListener;
+	private final AlgorithmParameters algorithmProperties;
 	
-	public ProblemSolution(IModelChangeListener programStateChangeListener, Problem problem, Algorithm algorithm, Properties algorithmProperties) {
+	public ProblemSolution(IModelChangeListener programStateChangeListener, Problem problem, Algorithm algorithm, AlgorithmParameters algorithmProperties) {
 		super();
 		this.problem = problem;
 		this.isFinished = false;
 		this.algorithm = algorithm;
 		this.algorithmProperties = algorithmProperties;
+		int iterationCount =algorithmProperties.getIterationCount();
+		this.iterationResults = Collections.synchronizedList(new ArrayList<IterationResult>(iterationCount));
+		this.programStateChangeListener  = programStateChangeListener;
+		
 	}
 	
-	public synchronized void addIterationResult(final IterationResult ir){
+	synchronized void addIterationResult(final IterationResult ir){
 		if(isFinished){
 			throw new IllegalStateException("cant add iteration result to finished solution");
 		}
@@ -67,7 +75,7 @@ public class ProblemSolution implements IProblemSolution {
 	}
 	
 	public Properties getAlgorithmProperties(){
-		return algorithmProperties;
+		return algorithmProperties.getAsProperties();
 	}
 	
 	public synchronized int getIterationsCount(){

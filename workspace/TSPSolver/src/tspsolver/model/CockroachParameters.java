@@ -1,25 +1,30 @@
 package tspsolver.model;
 
-import java.util.Properties;
+import tspsolver.annotations.Immutable;
 
-public class CockroachParameters {
+
+@Immutable
+public class CockroachParameters extends AlgorithmParameters{
 	
 	
-	private int iterationCount;
-	
-	public CockroachParameters(int iterationCount){
-		this.iterationCount = iterationCount;
-	}
-	
-	public Properties getAsProperties() {
-		Properties prop = new Properties();
-		prop.put("iterationCount", iterationCount);
-		return prop;
+	private final int population;
+	private final int steps;
+
+
+	public CockroachParameters(int iterationCount,int population,int steps){
+		super(iterationCount);
+		this.steps = steps;
+		this.population = population;
 	}
 
-	public int getIterationCount() {
-		return iterationCount;
+	public int getSteps() {
+		return steps;
 	}
+
+	public int getPopulation() {
+		return population;
+	}
+	
 
 
 }
