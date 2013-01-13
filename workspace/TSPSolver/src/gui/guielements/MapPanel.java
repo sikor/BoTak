@@ -13,11 +13,10 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import tspsolver.model.Point;
+import tspsolver.model.Problem;
 
 public class MapPanel extends JPanel {
 	private List<Point> pointList;
@@ -165,29 +164,9 @@ public class MapPanel extends JPanel {
 		System.out.println(e.getComponent().getClass().getName()
 				+ " --- Resized ");
 	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JFrame f = new JFrame();
-
-				f.setSize(new Dimension(400, 600));
-				ArrayList<Point> a = new ArrayList<Point>();
-				a.add(new Point(-100, -100));
-				a.add(new Point(10, 1000));
-				a.add(new Point(5, 8));
-				a.add(new Point(3, 7));
-				MapPanel mp = new MapPanel(a);
-				int[] solution = { 0,1,2,3 };
-				int[] sol2 = {2,1,3,0};
-				int[] sol3 = {1,0,2,3};
-				mp.addSolution(solution);
-				mp.addSolution(sol2);
-				mp.addSolution(sol3);
-				f.add(mp);
-				f.setVisible(true);
-			}
-		});
+	
+	public double[][] getDistances(){
+		return (new Problem(pointList)).getDistances();
 	}
 
 }
