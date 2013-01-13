@@ -82,7 +82,7 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 		public void actionPerformed(ActionEvent arg0) {
 			AlgorithmMainPanel algo = new AlgorithmMainPanel(algorithm);
 			algorithmPanels.put(algoCounter++, algo);
-			algo.setName("Genetic #" + algoCounter);
+			algo.setName(algorithm.name() +" #" + algoCounter);
 			tabb.add(algo);
 			tabb.setSelectedComponent(algo);
 			MainWindow.this.repaint();
