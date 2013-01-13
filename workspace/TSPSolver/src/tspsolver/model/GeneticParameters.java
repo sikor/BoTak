@@ -24,12 +24,14 @@ public class GeneticParameters extends AlgorithmParameters{
 		return liczbaOsobnikow;
 	}
 
+
 	public int getLiczbaKrzyzowan() {
 		return liczbaKrzyzowan;
 	}
 
 	public int getLiczbaMutacji() {
 		return liczbaMutacji;
+
 	}
 
 	public int getLiczbaPodmianWObrebieMutacji() {
