@@ -20,7 +20,7 @@ import tspsolver.model.Problem;
 
 public class MapPanel extends JPanel {
 	private List<Point> pointList;
-	private List<int[]> solutionList;
+	private int[] solutionList;
 	private int solutionPointer;
 	private int dotSize = 3;
 	private double margin = 0.2;
@@ -31,7 +31,7 @@ public class MapPanel extends JPanel {
 
 	public MapPanel() {
 		super();
-		solutionList = new ArrayList<int[]>();
+		solutionList = null;
 		pointList = new ArrayList<Point>();
 		this.setSize(400, 400);
 		addMouseListener(new MouseAdapter() {
@@ -42,20 +42,7 @@ public class MapPanel extends JPanel {
 		minX = -1;
 		maxX = 1;
 		minY = -1;
-		maxY = 1;
-		
-		JButton nextButton = new JButton((new AbstractAction("Next"){
-			public void actionPerformed(ActionEvent e){
-				solutionPointer = Math.min(solutionPointer+1, solutionList.size()-1);
-			}
-		}));
-		JButton prevButton = new JButton((new AbstractAction("Prev"){
-			public void actionPerformed(ActionEvent e){
-				solutionPointer = Math.min(solutionPointer+1, solutionList.size()-1);
-			}
-		}));
-		JPanel bp = new JPanel(new FlowLayout());
-	
+		maxY = 1;	
 	}
 	
 	public MapPanel(List<Point> pointList) {
@@ -103,9 +90,8 @@ public class MapPanel extends JPanel {
 		}
 	}
 
-	public void addSolution(int[] solution) {
-		solutionList.add(solution);
-		solutionPointer = solutionList.size()-1;
+	public void setSolution(int[] solution) {
+		this.solutionList = solution;
 		repaint();
 	}
 
@@ -131,8 +117,8 @@ public class MapPanel extends JPanel {
 		g.fillRect(0 + addX, 0 + addY, (int) ((maxX - minX) * factor),
 				(int) ((maxY - minY) * factor));
 
-		if (!solutionList.isEmpty()) {
-			int[] path = solutionList.get(solutionList.size() - 1);
+		if (solutionList != null) {
+			int[] path = solutionList;
 			int max = path.length;
 			g.setColor(Color.green);
 			Point p1 = pointList.get(path[0]);
