@@ -18,11 +18,5 @@ public class ImagesUtils {
 				e.printStackTrace();
 			}
 			return new ImageIcon(myPicture);
-//			if (imgURL != null)
-//				return new ImageIcon(imgURL, description);
-//			else {
-//				System.err.println("Couldn't find file: " + path);
-//				return null;
-//			}
 		}
 }
