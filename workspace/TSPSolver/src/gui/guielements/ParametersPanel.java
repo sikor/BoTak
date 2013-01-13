@@ -1,5 +1,6 @@
 package gui.guielements;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -102,6 +103,12 @@ class ParametersPanel extends JPanel implements ActionListener, PropertyChangeLi
 		c.insets = new Insets(10, 10, 10, 10); // top padding
 		c.anchor = GridBagConstraints.PAGE_END;
 		this.add(progressBar, c);
+//		c.gridx=0;
+//		c.gridy = i++;
+//		c.gridwidth=2;
+//		JLabel label = new JLabel("a                                                           a");
+//		label.setMinimumSize(new Dimension(3000,10));
+//		this.add(label, c);
 	}
 
 	public void addActionListener(ActionListener ac) {

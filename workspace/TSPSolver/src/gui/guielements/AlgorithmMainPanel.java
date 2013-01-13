@@ -11,14 +11,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.text.DecimalFormat;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -42,6 +44,7 @@ import tspsolver.algorithms.genetic.GeneticSolver;
 import tspsolver.model.AlgorithmParameters;
 import tspsolver.model.CockroachParameters;
 import tspsolver.model.GeneticParameters;
+import tspsolver.utils.ImagesUtils;
 
 public class AlgorithmMainPanel extends JPanel implements ActionListener,
 		PropertyChangeListener {
@@ -94,7 +97,7 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 
 					@Override
 					public boolean accept(File arg0) {
-						return arg0.getName().matches(".*\\.png");
+						return arg0.getName().matches(".*\\.tsp");
 					}
 
 					@Override
@@ -162,22 +165,18 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 		centralPanel.add(chartPanel, BorderLayout.SOUTH);
 		centralPanel.add(map, BorderLayout.CENTER);
 		this.add(centralPanel);
-		ImageIcon icon = createImageIcon("images/cockroach.png", "Cockroach");
+		ImageIcon icon;
+		if (al == Algorithm.Cockroach){
+			icon = ImagesUtils.getImageIcon("./images/cockroach.png");
+		}
+		else
+			icon = ImagesUtils.getImageIcon("./images/genetic.png");
 		parametersPanel = new ParametersPanel(al, icon);
 		parametersPanel.setMinimumSize(new Dimension(333,400));
 		parametersPanel.addActionListener(this);
 		this.add(parametersPanel, BorderLayout.EAST);
 	}
 
-	protected ImageIcon createImageIcon(String path, String description) {
-		java.net.URL imgURL = getClass().getResource(path);
-		if (imgURL != null)
-			return new ImageIcon(imgURL, description);
-		else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
 
 	public void addIterationResult(IterationResult itr) {
 		iterations.add(itr);

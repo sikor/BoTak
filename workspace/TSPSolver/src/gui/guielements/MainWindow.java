@@ -19,6 +19,7 @@ import tspsolver.algorithms.Algorithm;
 import tspsolver.algorithms.IterationResult;
 import tspsolver.model.interfaces.IModelChangeListener;
 import tspsolver.model.interfaces.IProblemSolution;
+import tspsolver.utils.ImagesUtils;
 
 public class MainWindow extends JFrame implements IModelChangeListener{
 	
@@ -30,11 +31,9 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 		this.setSize(900,500);
 		algorithmPanels = new HashMap<Integer,AlgorithmMainPanel>();
 		JPanel buttonPanel = new JPanel(new FlowLayout());		
-//		ImageIcon cockImage = createImageIcon("images/cockroach.jpg");
-//		ImageIcon geneImage = createImageIcon("images/genetic.jpg");
 		
-		JButton cockButton = new JButton("cock");
-		JButton geneButton = new JButton("gene");
+		JButton cockButton = new JButton(ImagesUtils.getImageIcon("images/add-cockroach.png"));
+		JButton geneButton = new JButton(ImagesUtils.getImageIcon("images/add-genetic.png"));
 		
 		cockButton.setActionCommand("add_cockroach");
 		geneButton.setActionCommand("add_genetic");
