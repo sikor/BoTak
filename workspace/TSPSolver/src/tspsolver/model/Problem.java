@@ -25,7 +25,7 @@ public class Problem {
 			}
 		}
 	}
-	
+
 	public double[][] getDistances() {
 		return ArrayUtils.cloneArray(distances);
 	}

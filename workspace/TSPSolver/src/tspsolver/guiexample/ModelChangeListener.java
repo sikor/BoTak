@@ -1,4 +1,4 @@
-package tspsolver.gui;
+package tspsolver.guiexample;
 
 import tspsolver.algorithms.IterationResult;
 import tspsolver.model.interfaces.IModelChangeListener;
@@ -19,7 +19,7 @@ public class ModelChangeListener implements IModelChangeListener {
 
 	@Override
 	public synchronized void newSolutionAdded(IProblemSolution problemSolution) {
-		System.out.println("new solution added");
+
 
 	}
 
