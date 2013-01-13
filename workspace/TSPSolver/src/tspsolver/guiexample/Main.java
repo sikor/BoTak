@@ -28,6 +28,7 @@ public class Main {
 		modelChangeListener = new MainWindow();
 		Initializator initializator = new Initializator(modelChangeListener); // Gui initialize model and controller
 		GuiActionsListener actionsListener = initializator.getActionsListener(); //Gui get api interface for calling actions
+		
 		SolvedProblems solvedProblems = initializator.getSolvedProblems(); //GUI takes lists of solvedProblems if want
 		
 		
