@@ -15,7 +15,4 @@ public interface ISolver {
 	 * used to set algorithm properties, should be called before calling nextIteration()
 	 * @param properties
 	 */
-
-	
-
 }
