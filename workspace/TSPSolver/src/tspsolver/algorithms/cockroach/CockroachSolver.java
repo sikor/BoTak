@@ -201,13 +201,13 @@ public class CockroachSolver implements ISolver{
     		ruthlessBehaviour();
     	}
     	
-		System.out.println("iteration: " + iterationNumber);
+		//System.out.println("iteration: " + iterationNumber);
 		
-		System.out.println("Kolejnosc zwiedzanych miast:");
-		for(int i : bestCockroach.toIntArray())
-			System.out.print(i + ", ");
+		//System.out.println("Kolejnosc zwiedzanych miast:");
+		//for(int i : bestCockroach.toIntArray())
+		//	System.out.print(i + ", ");
 		
-		System.out.println("\nNajlepszy rezultat to dystans: " + bestCockroach.getDistance());
+	//	System.out.println("\nNajlepszy rezultat to dystans: " + bestCockroach.getDistance());
     	
     	IterationResult result = new IterationResult(bestCockroach.toIntArray(), bestCockroach.getDistance(), iterationNumber++);
     	return result;

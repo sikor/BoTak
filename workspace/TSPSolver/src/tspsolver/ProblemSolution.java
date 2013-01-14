@@ -90,5 +90,9 @@ public class ProblemSolution implements IProblemSolution {
 	public  IterationResult getIterationResult(int i){
 		return iterationResults.get(i);
 	}
+	
+	public int getMaxIterationCount(){
+		return algorithmProperties.getIterationCount();
+	}
 
 }

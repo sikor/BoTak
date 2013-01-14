@@ -63,20 +63,20 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 	}
 
 	@Override
-	public void newSolutionAdded(IProblemSolution problemSolution) {
+	public synchronized void newSolutionAdded(IProblemSolution problemSolution) {
 		algorithmPanels.put(problemSolution, (AlgorithmMainPanel) tabb.getSelectedComponent());
 		((AlgorithmMainPanel) tabb.getSelectedComponent()).newSolutionAdded(problemSolution);
 	}
 	
 
 	@Override
-	public void newIterationResultAdded(IProblemSolution problemSolution,
+	public synchronized void newIterationResultAdded(IProblemSolution problemSolution,
 			IterationResult iterationResult) {
 		algorithmPanels.get(problemSolution).newIterationResultAdded(problemSolution, iterationResult);
 	}
 
 	@Override
-	public void solutionFinished(IProblemSolution problemSolution) {
+	public synchronized void solutionFinished(IProblemSolution problemSolution) {
 		algorithmPanels.get(problemSolution).solutionFinished(problemSolution);
 	}
 	
