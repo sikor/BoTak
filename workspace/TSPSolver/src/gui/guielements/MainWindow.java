@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import tspsolver.GuiActionsListener;
 import tspsolver.algorithms.Algorithm;
 import tspsolver.algorithms.IterationResult;
 import tspsolver.model.interfaces.IModelChangeListener;
@@ -25,6 +26,7 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 	
 	private Map<Integer, AlgorithmMainPanel> algorithmPanels; 
 	private JTabbedPane tabb;
+	private GuiActionsListener guiActionListener;
 	private static int algoCounter = 0;
 	public MainWindow (){
 		super();
@@ -52,11 +54,15 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
+	public void setGuiActionListener(GuiActionsListener gal){
+		this.guiActionListener = gal;
+	}
 
 	@Override
 	public void newSolutionAdded(IProblemSolution problemSolution) {
 		System.out.println("New SolutionAdded");
 	}
+	
 
 	@Override
 	public void newIterationResultAdded(IProblemSolution problemSolution,
