@@ -25,6 +25,7 @@ public class MapPanel extends JPanel {
 	private int dotSize = 3;
 	private double margin = 0.2;
 	private Dimension dim;
+	private boolean isClicable;
 	double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE,
 			minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
 	JPanel c;
@@ -33,20 +34,21 @@ public class MapPanel extends JPanel {
 		super();
 		solutionList = null;
 		pointList = new ArrayList<Point>();
-		this.setSize(400, 400);
+		isClicable=true;
+		//this.setSize(400, 400);
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				addPoint(e.getX(), e.getY());
+				if (isClicable)
+					addPoint(e.getX(), e.getY());
 			}
 		});
-		minX = -1;
-		maxX = 1;
-		minY = -1;
-		maxY = 1;	
+		minX = -1000;
+		maxX = 1000;
+		minY = -1000;
+		maxY = 1000;	
 	}
 	
-	public MapPanel(List<Point> pointList) {
-		this();
+	public void setPoints(List<Point> pointList) {
 		this.pointList = pointList;
 		minX = Double.MAX_VALUE;
 		maxX = Double.MIN_VALUE;
@@ -67,6 +69,8 @@ public class MapPanel extends JPanel {
 		margin = (maxY - minY) * this.margin;
 		minY -= margin;
 		maxY += margin;
+		isClicable=false;
+		repaint();
 	}
 
 	public void addPoint(int x, int y) {
@@ -151,8 +155,12 @@ public class MapPanel extends JPanel {
 				+ " --- Resized ");
 	}
 	
-	public double[][] getDistances(){
-		return (new Problem(pointList)).getDistances();
+	public Problem getProblem(){
+		return (new Problem(pointList));
+	}
+	
+	public void setIsClicable(boolean clicable){
+		isClicable = clicable;
 	}
 
 }

@@ -1,11 +1,12 @@
 package gui.guielements;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -13,9 +14,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 
 import tspsolver.GuiActionsListener;
+import tspsolver.ProblemSolution;
 import tspsolver.algorithms.Algorithm;
 import tspsolver.algorithms.IterationResult;
 import tspsolver.model.interfaces.IModelChangeListener;
@@ -24,14 +25,16 @@ import tspsolver.utils.ImagesUtils;
 
 public class MainWindow extends JFrame implements IModelChangeListener{
 	
-	private Map<Integer, AlgorithmMainPanel> algorithmPanels; 
+	private Map<IProblemSolution, AlgorithmMainPanel> algorithmPanels; 
+	private List<AlgorithmMainPanel> unmapedAlgorithmPanels;
 	private JTabbedPane tabb;
 	private GuiActionsListener guiActionListener;
 	private static int algoCounter = 0;
 	public MainWindow (){
 		super();
-		this.setSize(900,500);
-		algorithmPanels = new HashMap<Integer,AlgorithmMainPanel>();
+		this.setSize(900,700);
+		algorithmPanels = new HashMap<IProblemSolution,AlgorithmMainPanel>();
+		unmapedAlgorithmPanels = new ArrayList<AlgorithmMainPanel>();
 		JPanel buttonPanel = new JPanel(new FlowLayout());		
 		
 		JButton cockButton = new JButton(ImagesUtils.getImageIcon("images/add-cockroach.png"));
@@ -52,6 +55,7 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 		//tabb.add(new AlgorithmMainPanel(Algorithm.Cockroach));
 		this.add(tabb, BorderLayout.CENTER);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		setVisible(true);
 	}
 	public void setGuiActionListener(GuiActionsListener gal){
@@ -60,19 +64,31 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 
 	@Override
 	public void newSolutionAdded(IProblemSolution problemSolution) {
-		System.out.println("New SolutionAdded");
+//		boolean isMapped = true;
+//		for (AlgorithmMainPanel p : unmapedAlgorithmPanels){
+//			if (p.getProblem() == problemSolution.getProblem()){
+//				isMapped = false;
+//				algorithmPanels.put(problemSolution, p);
+//				unmapedAlgorithmPanels.remove(p);
+//				p.newSolutionAdded(problemSolution);
+//			}
+//		}
+//		if (isMapped){
+//		}
+		algorithmPanels.put(problemSolution, (AlgorithmMainPanel) tabb.getSelectedComponent());
+		((AlgorithmMainPanel) tabb.getSelectedComponent()).newSolutionAdded(problemSolution);
 	}
 	
 
 	@Override
 	public void newIterationResultAdded(IProblemSolution problemSolution,
 			IterationResult iterationResult) {
-		System.out.println("new Iteration result");
+		algorithmPanels.get(problemSolution).newIterationResultAdded(problemSolution, iterationResult);
 	}
 
 	@Override
 	public void solutionFinished(IProblemSolution problemSolution) {
-		System.out.println("solution finished");
+		algorithmPanels.get(problemSolution).solutionFinished(problemSolution);
 	}
 	
 	protected static ImageIcon createImageIcon(String path) {
@@ -86,8 +102,8 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 			this.algorithm = algorithm;
 		}
 		public void actionPerformed(ActionEvent arg0) {
-			AlgorithmMainPanel algo = new AlgorithmMainPanel(algorithm);
-			algorithmPanels.put(algoCounter++, algo);
+			AlgorithmMainPanel algo = new AlgorithmMainPanel(algorithm, guiActionListener);
+			unmapedAlgorithmPanels.add(algo);
 			algo.setName(algorithm.name() +" #" + algoCounter);
 			tabb.add(algo);
 			tabb.setSelectedComponent(algo);

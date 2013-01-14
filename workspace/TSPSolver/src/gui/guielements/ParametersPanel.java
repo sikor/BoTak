@@ -1,6 +1,5 @@
 package gui.guielements;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -10,7 +9,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -21,13 +22,17 @@ import javax.swing.JProgressBar;
 import javax.swing.text.NumberFormatter;
 
 import tspsolver.algorithms.Algorithm;
+import tspsolver.algorithms.IterationResult;
 import tspsolver.model.AlgorithmParameters;
 import tspsolver.model.CockroachParameters;
 import tspsolver.model.GeneticParameters;
+import tspsolver.model.interfaces.IModelChangeListener;
+import tspsolver.model.interfaces.IProblemSolution;
 
-class ParametersPanel extends JPanel implements ActionListener, PropertyChangeListener{
+class ParametersPanel extends JPanel implements ActionListener, IModelChangeListener{
 	private List<String> labels;
 	private List<JFormattedTextField> values;
+	private Map<String, Integer> labelToValue;
 	private JProgressBar progressBar;
 	private int parametersNumber;
 	private JButton startStopButton;
@@ -37,17 +42,18 @@ class ParametersPanel extends JPanel implements ActionListener, PropertyChangeLi
 		super();
 		this.algorithm = algorithm;
 		this.setLayout(new GridBagLayout());
+		labelToValue = new HashMap<String, Integer>();
 		GridBagConstraints c = new GridBagConstraints();
 		int i = 0;
 		c.gridx = 0;
 		c.gridy = i++;
 		c.gridwidth = 2;
-		c.insets = new Insets(10, 10, 40, 10);
+		c.insets = new Insets(10, 65, 40, 60);
 		JLabel iconLabel;
 		if (icon != null)
-			iconLabel = new JLabel(algorithm.name(), icon, JLabel.CENTER);
+			iconLabel = new JLabel( icon);
 		else
-			iconLabel = new JLabel(algorithm.name(), JLabel.CENTER);
+			iconLabel = new JLabel(algorithm.name());
 		this.add(iconLabel, c);
 		c.gridwidth = 1;
 		if (algorithm == Algorithm.Cockroach) {
@@ -69,6 +75,7 @@ class ParametersPanel extends JPanel implements ActionListener, PropertyChangeLi
 		values = new ArrayList<JFormattedTextField>(parametersNumber);
 
 		c = new GridBagConstraints();
+		c.insets = new Insets(0,10,2,0);
 		int n = 0;
 		for (String s : labels) {
 			c.gridx = 0;
@@ -134,15 +141,13 @@ class ParametersPanel extends JPanel implements ActionListener, PropertyChangeLi
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getActionCommand() == "Start"){
-			startStopButton.setText("Stop");
 			for (JFormattedTextField jftf : values){
 				jftf.setEnabled(false);
 			}
 			progressBar.setMaximum((int)values.get(0).getValue());
-			progressBar.setValue(0);
 		}
 		if (arg0.getActionCommand() == "Stop"){
-			startStopButton.setText("Start");			
+			startStopButton.setEnabled(false);			
 			for (JFormattedTextField jftf : values){
 				jftf.setEnabled(true);
 			}
@@ -151,19 +156,27 @@ class ParametersPanel extends JPanel implements ActionListener, PropertyChangeLi
 		
 	}
 
+
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName() == "progress"){
-			progressBar.setValue((int)evt.getNewValue());
-		}
-		if(evt.getPropertyName() == "state"){
-			if (evt.getNewValue().toString() == "DONE"){
-				startStopButton.setText("Start");
-				progressBar.setValue(progressBar.getMaximum());
-			}
-			for (JFormattedTextField jftf : values){
-				jftf.setEnabled(true);
-			}
+	public void newSolutionAdded(IProblemSolution problemSolution) {
+		progressBar.setMaximum((int)values.get(0).getValue());
+		progressBar.setValue(0);
+		progressBar.setString(null);
+		startStopButton.setEnabled(false);		
+	}
+
+	@Override
+	public void newIterationResultAdded(IProblemSolution problemSolution,
+			IterationResult iterationResult) {
+		progressBar.setValue(progressBar.getValue()+1);
+	}
+
+	@Override
+	public void solutionFinished(IProblemSolution problemSolution) {
+		progressBar.setString("Finished");
+		startStopButton.setEnabled(true);
+		for (JFormattedTextField jftf : values){
+			jftf.setEnabled(true);
 		}
 	}
 	
