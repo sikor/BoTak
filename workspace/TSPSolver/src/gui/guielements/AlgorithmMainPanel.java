@@ -17,6 +17,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -67,7 +68,7 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 	private GuiActionsListener guiActionListener;
 	private IProblemSolution problemSolution;
 	private Problem problem;
-
+	private int maxIt;
 
 	public AlgorithmMainPanel(Algorithm al, GuiActionsListener guiActionListener) {
 		super();
@@ -109,9 +110,9 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 		buttonPanel.add(openPoint, gbc);
 		gbc.gridy = gridYcounter++;
 		gbc.gridwidth = 1;
-		gbc.insets = new Insets(3,3,3,0);
+		gbc.insets = new Insets(3, 3, 3, 0);
 		buttonPanel.add(new JLabel("Map:"), gbc);
-		gbc.insets = new Insets(3,0,3,3);
+		gbc.insets = new Insets(3, 0, 3, 3);
 		buttonPanel.add(mapName = new JLabel("<<no name>>"), gbc);
 		gbc.gridy = gridYcounter++;
 		buttonPanel.add(prevIt, gbc);
@@ -142,17 +143,17 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				String v =((JTextField) arg0.getComponent()).getText();
+				String v = ((JTextField) arg0.getComponent()).getText();
 				repaintSolution(Integer.valueOf(v));
 			}
 
 		});
-		markedSolutionTF.addKeyListener(new KeyListener(){
+		markedSolutionTF.addKeyListener(new KeyListener() {
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if (arg0.getKeyChar() == KeyEvent.VK_ENTER){
-					String v =markedSolutionTF.getText();
+				if (arg0.getKeyChar() == KeyEvent.VK_ENTER) {
+					String v = markedSolutionTF.getText();
 					repaintSolution(Integer.valueOf(v));
 				}
 			}
@@ -160,15 +161,15 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
 
 		centralPanel.add(buttonPanel, BorderLayout.WEST);
@@ -190,12 +191,14 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 		if ("Start" == e.getActionCommand()) {
 			dataset.clear();
 			map.setSolution(null);
+
 			problem = map.getProblem();
 			if (problem == null) {
 				JOptionPane.showMessageDialog(this, "No Points");
 			} else {
 				AlgorithmParameters parameters = parametersPanel
 						.getParameters();
+				maxIt = parameters.getIterationCount();
 				if (algorithm == Algorithm.Cockroach) {
 					guiActionListener.solveCurrentProblemWithCockRoach(
 							(CockroachParameters) parameters, problem);
@@ -289,11 +292,19 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 	}
 
 	@Override
-	public void newIterationResultAdded(IProblemSolution problemSolution,
-			IterationResult iterationResult) {
+	public synchronized void newIterationResultAdded(
+			IProblemSolution problemSolution, IterationResult iterationResult) {
 		map.setSolution(iterationResult.getPath());
-		dataset.addValue(iterationResult.getLength(), (Integer) 1,
-				(Integer) iterationResult.getIterationNumber());
+		int thisIt = iterationResult.getIterationNumber();
+		if (maxIt > 1000) {
+			if (thisIt % (maxIt / 1000) == 1){
+				dataset.addValue(iterationResult.getLength(), (Integer) 1,
+						(Integer) iterationResult.getIterationNumber());
+			}
+		} else {
+			dataset.addValue(iterationResult.getLength(), (Integer) 1,
+					(Integer) iterationResult.getIterationNumber());
+		}
 		parametersPanel.newIterationResultAdded(problemSolution,
 				iterationResult);
 		markedSolutionTF.setText(String.valueOf(iterationResult
@@ -311,9 +322,8 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 	}
 
 	@Override
-	public void solutionFinished(IProblemSolution problemSolution) {
+	public synchronized void solutionFinished(IProblemSolution problemSolution) {
 		map.setIsClicable(true);
-		nextIt.setEnabled(true);
 		prevIt.setEnabled(true);
 		openPoint.setEnabled(true);
 		parametersPanel.solutionFinished(problemSolution);
