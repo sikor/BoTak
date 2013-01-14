@@ -49,6 +49,7 @@ public class MapPanel extends JPanel {
 	}
 	
 	public void setPoints(List<Point> pointList) {
+		solutionList = null;
 		this.pointList = pointList;
 		minX = Double.MAX_VALUE;
 		maxX = Double.MIN_VALUE;
@@ -156,6 +157,9 @@ public class MapPanel extends JPanel {
 	}
 	
 	public Problem getProblem(){
+		if (pointList.isEmpty()){
+			return null;
+		}
 		return (new Problem(pointList));
 	}
 	

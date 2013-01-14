@@ -29,7 +29,7 @@ import tspsolver.model.GeneticParameters;
 import tspsolver.model.interfaces.IModelChangeListener;
 import tspsolver.model.interfaces.IProblemSolution;
 
-class ParametersPanel extends JPanel implements ActionListener, IModelChangeListener{
+class ParametersPanel extends JPanel implements IModelChangeListener{
 	private List<String> labels;
 	private List<JFormattedTextField> values;
 	private Map<String, Integer> labelToValue;
@@ -87,14 +87,14 @@ class ParametersPanel extends JPanel implements ActionListener, IModelChangeList
 			formatter.setValueClass(Integer.class);
 			JFormattedTextField tf = new JFormattedTextField(formatter);
 			values.add(tf);
-			tf.setValue(new Integer(0));
+			tf.setValue(new Integer(1));
 			
 			tf.setColumns(7);
 			this.add(tf, c);
 		}
 
 		startStopButton = new JButton("Start");
-		startStopButton.addActionListener(this);
+		//startStopButton.addActionListener(this);
 		c.gridx = 0;
 		c.gridy = i++;
 		c.gridwidth = 2;
@@ -138,23 +138,19 @@ class ParametersPanel extends JPanel implements ActionListener, IModelChangeList
 		else return null;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getActionCommand() == "Start"){
-			for (JFormattedTextField jftf : values){
-				jftf.setEnabled(false);
-			}
-			progressBar.setMaximum((int)values.get(0).getValue());
-		}
-		if (arg0.getActionCommand() == "Stop"){
-			startStopButton.setEnabled(false);			
-			for (JFormattedTextField jftf : values){
-				jftf.setEnabled(true);
-			}
-//			progressBar.setValue(0);
-		}
-		
-	}
+//	@Override
+//	public void actionPerformed(ActionEvent arg0) {
+//		if (arg0.getActionCommand() == "Start"){
+//		}
+//		if (arg0.getActionCommand() == "Stop"){
+//			startStopButton.setEnabled(false);			
+//			for (JFormattedTextField jftf : values){
+//				jftf.setEnabled(true);
+//			}
+////			progressBar.setValue(0);
+//		}
+//		
+//	}
 
 
 	@Override

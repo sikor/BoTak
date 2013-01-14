@@ -64,17 +64,6 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 
 	@Override
 	public void newSolutionAdded(IProblemSolution problemSolution) {
-//		boolean isMapped = true;
-//		for (AlgorithmMainPanel p : unmapedAlgorithmPanels){
-//			if (p.getProblem() == problemSolution.getProblem()){
-//				isMapped = false;
-//				algorithmPanels.put(problemSolution, p);
-//				unmapedAlgorithmPanels.remove(p);
-//				p.newSolutionAdded(problemSolution);
-//			}
-//		}
-//		if (isMapped){
-//		}
 		algorithmPanels.put(problemSolution, (AlgorithmMainPanel) tabb.getSelectedComponent());
 		((AlgorithmMainPanel) tabb.getSelectedComponent()).newSolutionAdded(problemSolution);
 	}
@@ -104,7 +93,7 @@ public class MainWindow extends JFrame implements IModelChangeListener{
 		public void actionPerformed(ActionEvent arg0) {
 			AlgorithmMainPanel algo = new AlgorithmMainPanel(algorithm, guiActionListener);
 			unmapedAlgorithmPanels.add(algo);
-			algo.setName(algorithm.name() +" #" + algoCounter);
+			algo.setName(algorithm.name() +" #" + algoCounter++);
 			tabb.add(algo);
 			tabb.setSelectedComponent(algo);
 			MainWindow.this.repaint();
