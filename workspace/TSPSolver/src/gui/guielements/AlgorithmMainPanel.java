@@ -55,7 +55,6 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 	private ParametersPanel parametersPanel;
 	private DefaultCategoryDataset dataset;
 	private JPanel centralPanel;
-	// private List<IterationResult> iterations;
 	private JButton nextIt, prevIt, openPoint;
 	private Algorithm algorithm;
 	private int markedSolution;
@@ -69,10 +68,6 @@ public class AlgorithmMainPanel extends JPanel implements ActionListener,
 	private IProblemSolution problemSolution;
 	private Problem problem;
 
-	// private GradientPaint gradientpaint0 = new GradientPaint(0.0F, 0.0F, new
-	// Color(230, 230, 250), 0.0F, 0.0F, new Color(136, 136, 255));
-	// private GradientPaint gradientpaint1 = new GradientPaint(0.0F, 0.0F, new
-	// Color(240, 255, 240), 0.0F, 0.0F, new Color(136, 136, 255));
 
 	public AlgorithmMainPanel(Algorithm al, GuiActionsListener guiActionListener) {
 		super();
